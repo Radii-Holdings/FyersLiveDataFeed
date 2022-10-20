@@ -1,0 +1,6 @@
+
+1665080574866 :: get_profile :: XGE79HJ76R-100: :: 1665080575111 :: {'s': 'error', 'code': -17, 'message': 'Could not authenticate the user'}
+
+1665080811009 :: get_profile :: 85VLN1I8IV-100: :: 1665080811423 :: {'s': 'error', 'code': -17, 'message': 'Could not authenticate the user'}
+
+1665080812465 :: get_profile :: 85VLN1I8IV-100:eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJhcGkuZnllcnMuaW4iLCJpYXQiOjE2NjUwODA4MTIsImV4cCI6MTY2NTEwMjY1MiwibmJmIjoxNjY1MDgwODEyLCJhdWQiOlsieDowIiwieDoxIiwieDoyIiwiZDoxIiwiZDoyIiwieDoxIiwieDowIl0sInN1YiI6ImFjY2Vzc190b2tlbiIsImF0X2hhc2giOiJnQUFBQUFCalB4M3NQWjFuNmR4eTJjN2dPLVZscmRvc3poQW5JOFkyc1g1VjJ5UjNNUldJSWlRS1ZiRXJ1WkdfZFRFR3VTUDF4NjRnVWVTZm5Tb1JfTVV6QzhzcGJBOGJQdE9KWVRhY2pZMk9saXA3Y1Vxc0ozYz0iLCJkaXNwbGF5X25hbWUiOiJBTE9ZIEFESVRZQSBTRU4iLCJmeV9pZCI6IlhBMDEyODgiLCJhcHBUeXBlIjoxMDAsInBvYV9mbGFnIjoiTiJ9.siLbm9GeMm1SJuExwat2fShnsA0vp23eOLFqN1PuOkQ :: 1665080812899 :: {'s': 'ok', 'code': 200, 'message': '', 'data': {'fy_id': 'XA01288', 'name': 'ALOY ADITYA SEN', 'image': None, 'display_name': None, 'pin_change_date': '07-12-2021 01:19:31', 'email_id': 'adysenlab@gmail.com', 'pwd_change_date': '23-08-2021 10:00:34;5', 'PAN': '---------', 'totp': False, 'pwd_to_expire': 90}}

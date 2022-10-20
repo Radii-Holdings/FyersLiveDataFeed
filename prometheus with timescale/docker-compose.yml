@@ -1,0 +1,43 @@
+
+# I choosed host path mapping for postgresql data directory in a separate OS disk to be able to resize partition later.
+# You can use docker standart volumes too.
+
+# mkdir -p /data/timescaledb
+
+# cat docker-compose.yml 
+version: '3'
+
+services:
+  timescaledb:
+    image: timescale/timescaledb:latest-pg12
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: timescaledb
+      POSTGRES_PASSWORD: password
+    volumes:
+      - /data/timescaledb:/var/lib/postgresql/data
+  prometheus_postgresql_adapter:
+    depends_on:
+    - timescaledb
+    environment:
+      TS_PROM_LOG_LEVEL: debug
+      TS_PROM_DB_CONNECT_RETRIES: 10
+      TS_PROM_DB_HOST: timescaledb
+      TS_PROM_DB_USER: timescaledb
+      TS_PROM_DB_PASSWORD: password
+      TS_PROM_DB_NAME: postgres
+      TS_PROM_WEB_TELEMETRY_PATH: /metrics-text
+    image: timescale/timescale-prometheus:latest
+    restart: always
+    ports:
+    - 9201:9201/tcp
+
+
+# docker-compose up -d
+# docker ps
+# CONTAINER ID        IMAGE                                   COMMAND                  CREATED             STATUS              PORTS                    NAMES
+# ed8f7577c7b9        timescale/timescale-prometheus:latest   "/timescale-promethe…"   5 minutes ago       Up 5 minutes        0.0.0.0:9201->9201/tcp   timescaledb_prometheus_postgresql_adapter_1
+# bb77230c0bec        timescale/timescaledb:latest-pg12       "docker-entrypoint.s…"   2 hours ago         Up 2 hours          0.0.0.0:5432->5432/tcp   timescaledb_timescaledb_1
+
