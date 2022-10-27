@@ -85,7 +85,8 @@ func main() {
 				inter3 := strings.Trim(inter2, "  \" ")
 				inter4 := strings.Trim(inter3, "  \"\" ")
 				inter5 := strings.Trim(inter4, "  ( ) ")
-				row := []string{inter5, baseString2, now.Format(YYYYMMDD), time.Now().Format(HHMMSS)}
+				inter6 := strings.Trim(inter5, "  \"\"\" ")
+				row := []string{inter6, baseString2, now.Format(YYYYMMDD), time.Now().Format(HHMMSS)}
 				_ = csvwriter.Write(row)
 				csvwriter.Flush()
 
