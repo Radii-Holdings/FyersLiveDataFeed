@@ -6,7 +6,9 @@ import (
 	"encoding/csv"
 	"encoding/json"
 	"fmt"
+	"io"
 	"os"
+	"strconv"
 	"strings"
 	"time"
 
@@ -18,8 +20,10 @@ import (
 )
 
 const (
-	YYYYMMDD = "2006-01-02"
-	HHMMSS   = "17:06:04 PM"
+	YYYYMMDD       = "2006-01-02"
+	HHMMSS         = "17:06:04 PM"
+	DATAPATH_RAW   = "./dataset/raw/"
+	DATAPATH_BACUP = "./dataset/bacup/"
 )
 
 func JsonToBson(message []byte) ([]byte, error) {
@@ -36,6 +40,33 @@ func JsonToBson(message []byte) ([]byte, error) {
 	marshaled := buf.Bytes()
 	return marshaled, nil
 }
+
+// file copier function here
+
+func copy_toPath(src, dst string) (int64, error) {
+	sourceFileStat, err := os.Stat(src)
+	if err != nil {
+		return 0, err
+	}
+
+	if !sourceFileStat.Mode().IsRegular() {
+		return 0, fmt.Errorf("%s is not a regular file", src)
+	}
+
+	source, err := os.Open(src)
+	if err != nil {
+		return 0, err
+	}
+	defer source.Close()
+
+	destination, err := os.Create(dst)
+	if err != nil {
+		return 0, err
+	}
+	defer destination.Close()
+	nBytes, err := io.Copy(destination, source)
+	return nBytes, err
+}
 func main() {
 	apiKey := "85VLN1I8IV-100"
 	accessToken := os.Args[1]
@@ -45,7 +76,15 @@ func main() {
 		panic(err)
 	}
 	now := time.Now()
-	csvfile, err := os.Create("./dataset/raw/" + now.Format(YYYYMMDD) + ".csv")
+	filename := DATAPATH_RAW + now.Format(YYYYMMDD) + ".csv"
+	if _, err := os.Stat(filename); err == nil {
+		// file exists
+		copy_filename := DATAPATH_BACUP + now.Format(YYYYMMDD) + ".csv"
+
+		copy_toPath(filename, copy_filename)
+
+	}
+	csvfile, err := os.Create(filename)
 	if err != nil {
 		panic(err)
 	} else {
@@ -86,7 +125,8 @@ func main() {
 				inter4 := strings.Trim(inter3, "  \"\" ")
 				inter5 := strings.Trim(inter4, "  ( ) ")
 				inter6 := strings.Trim(inter5, "  \"\"\" ")
-				row := []string{inter6, baseString2, now.Format(YYYYMMDD), time.Now().Format(HHMMSS)}
+				t := time.Now()
+				row := []string{inter6, baseString2, now.Format(YYYYMMDD), strconv.Itoa(t.Hour()) + ":" + strconv.Itoa(t.Minute()) + ":" + strconv.Itoa(t.Second())}
 				_ = csvwriter.Write(row)
 				csvwriter.Flush()
 
