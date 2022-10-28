@@ -79,8 +79,8 @@ func main() {
 	filename := DATAPATH_RAW + now.Format(YYYYMMDD) + ".csv"
 	if _, err := os.Stat(filename); err == nil {
 		// file exists
-		copy_filename := DATAPATH_BACUP + now.Format(YYYYMMDD) + ".csv"
-
+		copy_filename := DATAPATH_BACUP + strings.ReplaceAll(now.Format(time.ANSIC), ":", "-") + ".csv"
+		fmt.Println("file is being bscked up", copy_filename, filename)
 		copy_toPath(filename, copy_filename)
 
 	}
