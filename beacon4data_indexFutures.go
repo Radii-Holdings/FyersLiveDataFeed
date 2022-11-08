@@ -12,6 +12,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/rishi-anand/fyers-go-client"
 	"github.com/rishi-anand/fyers-go-client/api"
 	fyerswatch "github.com/rishi-anand/fyers-go-client/websocket"
 	"go.mongodb.org/mongo-driver/bson/bsonrw"
@@ -70,6 +71,8 @@ func copy_toPath(src, dst string) (int64, error) {
 func main() {
 	apiKey := "85VLN1I8IV-100"
 	accessToken := os.Args[1]
+	// this api is to be used for the referncial token paint for the futures to be calculated
+	RapidAPI := fyers.New(apiKey, accessToken)
 	// mongo database connect
 	client, err := mongo.Connect(context.TODO(), options.Client().ApplyURI("mongodb://localhost:27017"))
 	if err != nil {
@@ -101,6 +104,14 @@ func main() {
 		onMessageFunc := func(notification api.Notification) {
 			// fmt.Println(notification.Type, notification.SymbolData)
 			// fmt.Println(notification.SymbolData.LowPrice, notification.SymbolData.Symbol)
+
+			// this shall help in AI predictions 
+			qouteReferences := [1]string{"NSE:NIFTY50-INDEX"}
+			if quote, err := RapidAPI.GetQuote(qouteReferences[]); err != nil {
+				fmt.Errorf("failed to get quote from fyers. %v", err)
+			} else {
+				fmt.Println(quote)
+			}
 
 			DataPack, err := json.Marshal(notification)
 			datumNode, err := JsonToBson([]byte(DataPack))
@@ -152,7 +163,7 @@ func main() {
 
 			// cli.Subscribe(api.SymbolDataTick, "NSE:SBIN-EQ", "NSE:ONGC-EQ")
 
-		symbols := []string{"NSE:SBIN-EQ", "NSE:ONGC-EQ"}
+		symbols := []string{"NSE:BANKNIFTY22NOVFUT", "NSE:FINNIFTY22NOVFUT", "NSE:NIFTY22NOVFUT"}
 		// create the capped collections
 		for i := 0; i < len(symbols); i++ {
 			baseString1 := strings.ReplaceAll(symbols[i], ":", "-")

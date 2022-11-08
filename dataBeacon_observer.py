@@ -1,8 +1,4 @@
 
-
-
-
-
 ########################
 
 
@@ -39,7 +35,7 @@ class Subject(ABC):
         pass
 
 
-class ConcreteSubject(Subject):
+class BEACONSubject(Subject):
     """
     The Subject owns some important state and notifies observers when the state
     changes.
@@ -47,8 +43,7 @@ class ConcreteSubject(Subject):
 
     _state: int = None
     """
-    For the sake of simplicity, the Subject's state, essential to all
-    subscribers, is stored in this variable.
+    For the sake of simplicity, the  Beacon Subject's state, is 
     """
 
     _observers: List[Observer] = []
@@ -136,20 +131,30 @@ print('today file to operate ', sourceFileName)
 #Dataset Path 
 RAW_FILE_PATH = "./dataset/raw"
 PROCESSING_FILE_PATH = './dataset/processing'
-TIME_DELAY = 1 # MINUTES DATASET 
+NEW_DATA_OFFSET = 1 # MINUTES DATASET 
+BEACON_OFFSET = 5 # SECONDS RECALCULATION LOOPS
+AI_OFFSET =30 # SECONDS PREDICTORS
 
+###########################################################################################
+
+# dataset operative functions
+
+################################################################################
 
 def copy_dataset():
     try:
         dest = shutil.copy(RAW_FILE_PATH+"/"+sourceFileName, PROCESSING_FILE_PATH+"/"+sourceFileName )
         print(dest)
+        return dest
     except shutil.SameFileError :
         print ('error while copying the dataset')
 
-if __name__ == "__main__":
-    # The client code.
-
-    subject = ConcreteSubject()
+def BEACON_observers():
+    '''
+        The BEACON observers shall feed upon market parameters and technical indicators / 
+        be called on specified intervals
+    '''
+    subject = BEACONSubject()
 
     observer_a = ConcreteObserverA()
     subject.attach(observer_a)
@@ -164,7 +169,18 @@ if __name__ == "__main__":
 
     subject.some_business_logic()
 
-    schedule.every(TIME_DELAY).minutes.do(copy_dataset)
+#####################################################################################################
+
+# Can opener entry point for the processing of realtime data
+
+if __name__ == "__main__":
+    # The client code.
+
+
+
+    schedule.every(NEW_DATA_OFFSET).minutes.do(copy_dataset)
+
+    # schedule.every(BEACON_OFFSET).minutes.do(BEACON_observers)
 
     while True :
         schedule.run_pending()
