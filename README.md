@@ -9,4 +9,4 @@ Just run the fwindows batch file
 ### The code organization in this repository
 
 - The above code [ in the `master` branch ] is only having ability to observe for futures
-- To work with option chain datasets please refer to `optionsObserver` branch
+- To work with option chain datasets please refer to `optionsObserver` branch https://github.com/Radii-Holdings/FyersLiveDataFeed/tree/optionsObserver
