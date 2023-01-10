@@ -105,9 +105,9 @@ func main() {
 			// fmt.Println(notification.Type, notification.SymbolData)
 			// fmt.Println(notification.SymbolData.LowPrice, notification.SymbolData.Symbol)
 
-			// this shall help in AI predictions 
-			qouteReferences := [1]string{"NSE:NIFTY50-INDEX"}
-			if quote, err := RapidAPI.GetQuote(qouteReferences[]); err != nil {
+			// this shall help in AI predictions
+			qouteReferences := []string{"NSE:NIFTY50-INDEX"}
+			if quote, err := RapidAPI.GetQuote(qouteReferences); err != nil {
 				fmt.Errorf("failed to get quote from fyers. %v", err)
 			} else {
 				fmt.Println(quote)
@@ -163,7 +163,7 @@ func main() {
 
 			// cli.Subscribe(api.SymbolDataTick, "NSE:SBIN-EQ", "NSE:ONGC-EQ")
 
-		symbols := []string{"NSE:BANKNIFTY22NOVFUT", "NSE:FINNIFTY22NOVFUT", "NSE:NIFTY22NOVFUT"}
+		symbols := []string{"NSE:BANKNIFTY23JANFUT", "NSE:FINNIFTY23JANFUT", "NSE:NIFTY23JANFUT"}
 		// create the capped collections
 		for i := 0; i < len(symbols); i++ {
 			baseString1 := strings.ReplaceAll(symbols[i], ":", "-")
